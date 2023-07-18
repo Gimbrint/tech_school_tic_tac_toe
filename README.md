@@ -43,8 +43,6 @@ Tas klonēs to repo.
 
 Var arī parādīties "Pull poga". Tas nozīmē, ka tajā repo kas is githubā ir izmaiņas kas nav tavējā lokālajā klonā. Spiežot tās tiks ieliktas tavējā lokālajā klonā.
 
-**1.**
-
 ## Kā ielikt lietas
 
 ### Ja lieto VSCode
