@@ -47,7 +47,9 @@ Tas clonēs to repo.
 
 **2.** Spied commit. (ja prasa ka nav staged commiti, tad spied "Yes")
 
-**3.** 
+**3.** Tagad atverās jauns fails, tajā var pirmajā līnijā ierakstīt ko tu izmainīji un tad var to aizvert ciet, spiežot X pogu blakus nosaukumam.
+
+**4.** 
 
 ### Ja nelieto
 
