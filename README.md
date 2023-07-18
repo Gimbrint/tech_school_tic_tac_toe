@@ -49,7 +49,7 @@ Tas clonēs to repo.
 
 **3.** Tagad atverās jauns fails, tajā var pirmajā līnijā ierakstīt ko tu izmainīji un tad var to aizvert ciet, spiežot X pogu blakus nosaukumam.
 
-**4.** 
+**4.** Tad parādīsies jauna poga "Sync"
 
 ### Ja nelieto
 
