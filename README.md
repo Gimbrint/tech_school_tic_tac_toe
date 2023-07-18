@@ -20,7 +20,7 @@
 
 **2.** Atver termināli (Ctrl + Alt + T)
 
-**2.+** Ja grib, var pārvietoties uz kādu citu folderi šādi:
+**2.+** [NEOBLIGĀTI] Ja grib, var pārvietoties uz kādu citu folderi šādi:
 
 ```
 cd ./<foldera nosaukums>
