@@ -2,7 +2,7 @@
 
 Šī ir repo mūsu krustiņu un nullīšu spēlei.
 
-## Kā clonēt uz savu datoru
+## Kā klonēt uz savu datoru
 
 ### Visos
 
@@ -37,7 +37,13 @@ cd ./kaut_kas
 git clone https://github.com/Gimbrint/tech_school_tic_tac_toe
 ```
 
-Tas clonēs to repo.
+Tas klonēs to repo.
+
+## Pull poga
+
+Var arī parādīties "Pull poga". Tas nozīmē, ka tajā repo kas is githubā ir izmaiņas kas nav tavējā lokālajā klonā. Spiežot tās tiks ieliktas tavējā lokālajā klonā.
+
+**1.**
 
 ## Kā ielikt lietas
 
@@ -49,8 +55,13 @@ Tas clonēs to repo.
 
 **3.** Tagad atverās jauns fails, tajā var pirmajā līnijā ierakstīt ko tu izmainīji un tad var to aizvert ciet, spiežot X pogu blakus nosaukumam.
 
-**4.** Tad parādīsies jauna poga "Sync"
+**4.** Tad parādīsies jauna poga "Sync Changes #". To lūdzu spiediet.
 
 ### Ja nelieto
 
-**1.**
+**1.** Atver termināli un ievadi šīs komandas:
+
+```
+git commit -am "<izmaiņas>"
+git push
+```
