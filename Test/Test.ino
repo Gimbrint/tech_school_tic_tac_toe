@@ -3,17 +3,21 @@
 #include <Adafruit_GFX.h>
 #include <Max72xxPanel.h>
 
+#include <math.h>
+
 // The values for turns
 #define cross 1
 #define nought 2
-
-
-// ### INTERFACE, AKA GRAPHICS ###
 
 // I forgot pin, also why can't i choose DIN or CKL?
 int pinCS = 10; 
 //Din connects to pin 11
 //CLK connects to pin 13
+
+bool changed = false;
+bool wasChanged = false;
+int currentImage = 0;
+const unsigned char PROGMEM currentMap[8] = {0, 0, 0, 0, 0, 0, 0, 0};
 
 int numberOfHorizontalDisplays = 3;
 int numberOfVerticalDisplays = 6;
@@ -53,57 +57,81 @@ const unsigned char PROGMEM oMap[] = {
   B00111100,
 };
 
-class Game {
-  public:
-    int board[9] = {0, 0, 0, 0, 0, 0, 0, 0, 0};
-    int turn = 0;
-    
-    Game() {
-      Serial.println("Hooray! We made a game exist!");
-      placePiece(0,0);
-      placePiece(1,1);
-      placePiece(2,2);
-      Serial.println(checkWin());
-    }
-    void placePiece(int x, int y) {
-      int pos = x+3*y;
-      
-      if (turn == cross) {
-        drawXMap(x, y);
-        board[pos] = cross;
-      } else {
-        drawOMap(x, y);
-        board[pos] = nought;
-      }
-
-      turn = 1 - turn;
-    }
-    bool checkWin() {
-      for (int i = 0; i <= 2; i++) {
-        if (
-          (board[3*i]==board[3*i+1] && board[3*i+1]==board[3*i+2]) // Check row
-          || (board[i]==board[i+3] && board[i+3]==board[i+6]) // Check column
-        ) return true;
-      }
-      // Diagonals
-      if (
-        (board[0]==board[4] && board[4]==board[9])
-        || (board[2]==board[4] && board[4]==board[7])
-      ) return true;
-      
-      return false;
-    }
-    void drawXMap(int x, int y) {
-      matrix.drawBitmap(8*x, 16-8*y, xMap, 8, 8, HIGH);
-      matrix.write();
-    }
-    void drawOMap(int x, int y) {
-      matrix.drawBitmap(8*x, 8*y, xMap, 8, 8, HIGH);
-      matrix.write();
-    }
+const unsigned char PROGMEM images[][9] {
+  {
+    B10101010,
+    B01010101,
+    B10101010,
+    B01010101,
+    B10101010,
+    B01010101,
+    B10101010,
+    B01010101,
+  }, {
+    B10101010,
+    B01010101,
+    B10101010,
+    B01010101,
+    B10101010,
+    B01010101,
+    B10101010,
+    B01010101,
+  }, {
+    B10101010,
+    B01010101,
+    B10101010,
+    B01010101,
+    B10101010,
+    B01010101,
+    B10101010,
+    B01010101,
+  }, {
+    B10101010,
+    B01010101,
+    B10101010,
+    B01010101,
+    B10101010,
+    B01010101,
+    B10101010,
+    B01010101,
+  }, {
+    B10101010,
+    B01010101,
+    B10101010,
+    B01010101,
+    B10101010,
+    B01010101,
+    B10101010,
+    B01010101,
+  }, {
+    B10101010,
+    B01010101,
+    B10101010,
+    B01010101,
+    B10101010,
+    B01010101,
+    B10101010,
+    B01010101,
+  }, {
+    B10101010,
+    B01010101,
+    B10101010,
+    B01010101,
+    B10101010,
+    B01010101,
+    B10101010,
+    B01010101,
+  }, {
+    B10101010,
+    B01010101,
+    B10101010,
+    B01010101,
+    B10101010,
+    B01010101,
+    B10101010,
+    B01010101,
+  }
 };
-
-
 
 void setup() {
   Serial.begin(9600);
@@ -128,20 +156,92 @@ void setup() {
   //matrix.setRotation(2, 1);
   //matrix.setRotation(3, 1);
 
-  Game game;
-
   pinMode(8, INPUT);
-  pinMode(2, INPUT);
-  pinMode(3, INPUT);
+
+  drawImage();
 }
 
 void loop() {
-  Serial.println(digitalRead(8));
-  Serial.println(digitalRead(2));
-  Serial.println(digitalRead(3));
+  if (!digitalRead(8)) {
+    if (!wasChanged) {
+      Serial.println("touched");
+      wasChanged = true;
+      currentImage = (currentImage + 1) % sizeof(images);
+    }
+  }
+  else if (wasChanged) {
+    delay(1000);
+    wasChanged = !wasChanged;
+  }
 }
 
+void drawImage() {
+  for (int i = 0; i < 9; i++) {
+    Serial.print("Got: ");
+    matrix.drawBitmap(8*(i%3), 16-8*floor(i/3), currentMap, 8, 8, HIGH);
+  }
+  matrix.write();
+}
+
+
+
 // ### THIS CODE IS USELESS, PLEASE DON'T THROW IT AWAY THOUGH! ###
+
+//class Game {
+//  public:
+//    //int board[9] = {0, 0, 0, 0, 0, 0, 0, 0, 0};
+//    //int turn = 1;
+//    
+//    Game() {
+//      Serial.println("Hooray! We made a game exist!");
+//      placePiece(0,0);
+//      placePiece(1,0);
+//      placePiece(2,0);
+//      placePiece(0,1);
+//      placePiece(1,1);
+//      placePiece(2,1);
+//      placePiece(0,2);
+//      placePiece(1,2);
+//      placePiece(2,2);
+//      matrix.write();
+//      Serial.println(checkWin());
+//    }
+//    void placePiece(int x, int y) {
+//      int pos = x+3*y;
+//      
+//      if (turn == cross) {
+//        drawXMap(x, y);
+//        board[pos] = cross;
+//      } else {
+//        drawOMap(x, y);
+//        board[pos] = nought;
+//      }
+//
+//      //turn = 1 - turn;
+//    }
+//    bool checkWin() {
+//      for (int i = 0; i <= 2; i++) {
+//        if (
+//          (board[3*i]==board[3*i+1] && board[3*i+1]==board[3*i+2]) // Check row
+//          || (board[i]==board[i+3] && board[i+3]==board[i+6]) // Check column
+//        ) return true;
+//      }
+//      // Diagonals
+//      if (
+//        (board[0]==board[4] && board[4]==board[9])
+//        || (board[2]==board[4] && board[4]==board[7])
+//      ) return true;
+//      
+//      return false;
+//    }
+//    void drawXMap(int x, int y) {
+//      matrix.drawBitmap(8*x, 16-8*y, xMap, 8, 8, HIGH);
+//    }
+//    void drawOMap(int x, int y) {
+//      matrix.drawBitmap(8*x, 8*y, oMap, 8, 8, HIGH);
+//      matrix.write();
+//    }
+//};
 
 //LedControl lc = LedControl(4,3,2, 1);
 //
